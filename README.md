@@ -11,7 +11,17 @@ For more generic approaches, please check:
 <https://github.com/jetsonhacks>
 as well as JetsonHacks on YouTube.
 
-## Finding
+## Prereq
+
+- Ubuntu 22? (with some free disk space. say 64GB ?)
+- stable USB connection to Jetson Orin Nano carrier board.
+`curl wget tar grep awk sed sudo lsus`
+
+```bash
+sudo apt install qemu binfmt-support qemu-user-static libxml2-utils binutils
+```
+
+## Findings
 
 Running Ubuntu 24 from a USB stick in the end got stuck during flashing.
 Possibly due to USB hiccups.

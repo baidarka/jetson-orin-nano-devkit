@@ -25,7 +25,7 @@ check_requirements() {
 # --- GET LATEST VERSION + URLs ---
 get_latest_urls() {
 
-    banner "Finding Jetson Linux release (defaulting to: $L4T_VERSION"
+    banner "Finding Jetson Linux release (defaulting to: $L4T_VERSION)"
     # check at the archive for latest version
     #ARCHIVE_PAGE=$(curl https://developer.nvidia.com/embedded/jetson-linux-archive)
     # L4T_VERSION=$(echo "$ARCHIVE_PAGE" | grep -oP 'Jetson Linux R\d+\.\d+\.\d+' | head -n1 | grep -oP '\d+\.\d+\.\d+')
@@ -76,13 +76,19 @@ detect_device() {
 }
 
 # --- DOWNLOAD FILES ---
-
 download_files() {
+    banner "Downloading BSP and RootFS to '$WORKDIR'"
     mkdir -p "$WORKDIR"
     cd "$WORKDIR"
-    banner "Downloading BSP and RootFS"
-    [ -f Jetson_Linux_R${L4T_VERSION}_aarch64.tbz2 ] || wget -O Jetson_Linux_R${L4T_VERSION}_aarch64.tbz2 "$BSP_URL"
-    [ -f Tegra_Linux_Sample-Root-Filesystem_R${L4T_VERSION}_aarch64.tbz2 ] || wget -O Tegra_Linux_Sample-Root-Filesystem_R${L4T_VERSION}_aarch64.tbz2 "$ROOTFS_URL"
+
+    BSP_FILE="Jetson_Linux_R${L4T_VERSION}_aarch64.tbz2"
+    ROOTFS_FILE="Tegra_Linux_Sample-Root-Filesystem_R${L4T_VERSION}_aarch64.tbz2"
+
+    # if not exists, then download file
+    [ -f "$BSP_FILE" ] || curl -L "$BSP_URL" -o "$BSP_FILE"
+    [ -f "$ROOTFS_FILE" ] || curl -L "$ROOTFS_URL" -o "$ROOTFS_FILE"
+
+    ls -al $WORKDIR
 }
 
 # --- EXTRACT & APPLY BINARIES ---
@@ -124,8 +130,8 @@ flash_device() {
 check_requirements
 get_latest_urls
 #detect_device
-#download_files
-#extract_and_prepare
+download_files
+extract_and_prepare
 #wait_for_device
 #flash_device
 
