@@ -13,7 +13,7 @@ banner() { echo -e "\n=== $1 ===\n"; }
 check_requirements() {
 
     banner "Checking requirements"
-    sudo apt install lbzip2 bzip2 qemu binfmt-support qemu-user-static libxml2-utils binutils
+    sudo apt update && sudo apt install -y lbzip2 bzip2 qemu binfmt-support qemu-user-static libxml2-utils binutils
 
     for cmd in wget tar grep awk sed sudo lsusb; do
       echo "check $cmd"

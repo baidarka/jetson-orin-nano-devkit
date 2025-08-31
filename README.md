@@ -7,6 +7,9 @@ My goal is to flash the Jetson from the commandline, and straight onto an NVMe d
 Thereby bypassing the SD card business.
 Apparently that is a valid scenario.
 
+Note: I run Ubuntu 22 server on a 64GB USB stick.
+All seems peachy but the actual flashing does not complete...
+
 For more generic approaches, please check:
 <https://github.com/jetsonhacks>
 as well as JetsonHacks on YouTube.
@@ -18,7 +21,7 @@ as well as JetsonHacks on YouTube.
 `curl wget tar grep awk sed sudo lsus`
 
 ```bash
-sudo apt install qemu binfmt-support qemu-user-static libxml2-utils binutils
+git clone https://github.com/baidarka/jetson-orin-nano-devkit.git
 ```
 
 ## Findings
