@@ -55,14 +55,14 @@ get_latest_urls() {
 
 # --- AUTO-SELECT DEVICE ---
 
-detect_device() {
+specify_device() {
     # Default assumption: Jetson Orin Nano DevKit has onboard eMMC
     # DEVICE="mmcblk0p1"
     # sdmmc_user
     # I use a 1TB NVMe
 
     DEVICE="nvme0n1p1"
-    banner "Detecting target storage device"
+    banner "Specify target storage device"
     echo "Assuming NWMe ($DEVICE)."
     echo
     echo "Press Enter to accept default ($DEVICE) or type your device:"
@@ -109,7 +109,7 @@ wait_for_device() {
     banner "Waiting for Jetson in recovery mode"
     echo "Put Jetson Orin Nano into recovery mode:"
     echo "    1. Power off the board."
-    echo "    2. Hold FORCE RECOVERY and press POWER."
+    echo "    2. Connect pin 2 to ground to go into recovery mode."
     echo "    3. Connect USB-C to host."
     echo "Press Enter when ready..."
     read
@@ -129,10 +129,10 @@ flash_device() {
 # --- MAIN EXECUTION ---
 check_requirements
 get_latest_urls
-#detect_device
+specify_device
 download_files
 extract_and_prepare
-#wait_for_device
-#flash_device
+wait_for_device
+flash_device
 
 banner "✅ Flash complete. Reboot your Jetson to finish setup."
