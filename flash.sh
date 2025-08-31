@@ -13,7 +13,7 @@ banner() { echo -e "\n=== $1 ===\n"; }
 check_requirements() {
 
     banner "Checking requirements"
-    sudo apt install qemu binfmt-support qemu-user-static libxml2-utils binutils
+    sudo apt install lbzip2 bzip2 qemu binfmt-support qemu-user-static libxml2-utils binutils
 
     for cmd in wget tar grep awk sed sudo lsusb; do
       echo "check $cmd"
@@ -95,9 +95,9 @@ download_files() {
 
 extract_and_prepare() {
     banner "Extracting BSP"
-    tar -xvjf Jetson_Linux_R${L4T_VERSION}_aarch64.tbz2
+    tar -xvjf $BSP_FILE
     banner "Extracting RootFS"
-    sudo tar -xvjf Tegra_Linux_Sample-Root-Filesystem_R${L4T_VERSION}_aarch64.tbz2 -C Linux_for_Tegra/rootfs
+    sudo tar -xvjf $ROOTFS_FILE -C Linux_for_Tegra/rootfs
     banner "Applying Binaries"
     cd Linux_for_Tegra
     sudo ./apply_binaries.sh
