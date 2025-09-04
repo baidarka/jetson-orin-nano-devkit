@@ -13,7 +13,27 @@ banner() { echo -e "\n=== $1 ===\n"; }
 check_requirements() {
 
     banner "Checking requirements"
-    sudo apt update && sudo apt install -y lbzip2 bzip2 qemu binfmt-support qemu-user-static libxml2-utils binutils
+    sudo apt update && \
+    sudo apt install -y \
+      python3 \
+      python3-pip \
+      python3-venv \
+      wget \
+      tar \
+      git \
+      curl \
+      unzip \
+      xz-utils \
+      lzop \
+      zstd \
+      pv \
+      lbzip2 \
+      bzip2 \
+      qemu \
+      binfmt-support \
+      qemu-user-static \
+      libxml2-utils \
+      binutils
 
     for cmd in wget tar grep awk sed sudo lsusb; do
       echo "check $cmd"
@@ -123,7 +143,20 @@ wait_for_device() {
 # --- FLASH DEVICE ---
 flash_device() {
     banner "Flashing $BOARD to $DEVICE"
-    sudo ./flash.sh $BOARD $DEVICE
+
+    # You are in Linux_for_Tegra dir
+    # sudo ./flash.sh $BOARD $DEVICE
+    # sudo ./tools/kernel_flash/l4t_initrd_flash.sh \
+    #   --external-device "$DEVICE" \
+    #   -c tools/kernel_flash/flash_l4t_external.xml \
+    #   -p "-c bootloader/t186ref/cfg/flash_t234_qspi.xml" \
+    #   --network usb0 \
+    #   jetson-orin-nano-devkit internal
+    sudo ./tools/kernel_flash/l4t_initrd_flash.sh \
+      --external-device nvme0n1 \
+      --external-only \
+      --erase-all \
+      jetson-orin-nano-devkit $DEVICE
 }
 
 # --- MAIN EXECUTION ---
