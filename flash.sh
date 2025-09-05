@@ -33,7 +33,10 @@ check_requirements() {
       binfmt-support \
       qemu-user-static \
       libxml2-utils \
-      binutils
+      binutils \
+      sshpass \
+      abootimg \
+      nfs-kernel-server
 
     for cmd in wget tar grep awk sed sudo lsusb; do
       echo "check $cmd"
@@ -144,6 +147,9 @@ wait_for_device() {
 flash_device() {
     banner "Flashing $BOARD to $DEVICE"
 
+    sudo systemctl stop rpcbind
+    sudo systemctl stop rpcbind.socket
+
     # You are in Linux_for_Tegra dir
     # sudo ./flash.sh $BOARD $DEVICE
     # sudo ./tools/kernel_flash/l4t_initrd_flash.sh \
@@ -154,8 +160,9 @@ flash_device() {
     #   jetson-orin-nano-devkit internal
     sudo ./tools/kernel_flash/l4t_initrd_flash.sh \
       --external-device nvme0n1 \
-      --external-only \
       --erase-all \
+      -c tools/kernel_flash/flash_l4t_external.xml \
+      --network usb0 \
       jetson-orin-nano-devkit $DEVICE
 }
 
